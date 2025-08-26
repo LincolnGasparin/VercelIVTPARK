@@ -1,15 +1,16 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { Decimal } from "@prisma/client/runtime/library";
 
 // Este é o tipo que você deve exportar e usar no seu componente de cliente
 export type Caixas = {
   id: number;
   data_abertura: Date;
   data_fechamento: Date | null;
-  saldo_abertura: number; // Note que é `number`
-  saldo_atual: number | null;
-  saldo_fechamento: number | null; // Note que é `number`
+  saldo_abertura: Decimal; // Note que é `number`
+  saldo_atual: Decimal | null;
+  saldo_fechamento: Decimal | null; // Note que é `number`
   operador: string;
 };
 
