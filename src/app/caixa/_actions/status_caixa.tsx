@@ -7,11 +7,6 @@ type CaixaStatusResult = {
   id: number | null;
 };
 
-// Define um tipo para o que o Prisma vai retornar da query.
-type CaixaQueryResult = {
-  id: number;
-}[];
-
 export async function statusCaixaAction(): Promise<CaixaStatusResult> {
   // A query retorna um array. Se o caixa estiver aberto, o array terá um item.
   // const caixaAberto = await prisma.$queryRaw<CaixaQueryResult>`SELECT id FROM caixas WHERE data_fechamento IS NULL ORDER BY data_abertura DESC LIMIT 1`;

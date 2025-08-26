@@ -106,7 +106,7 @@ export async function releaseVagaAction(transactionId: number) {
         revalidatePath("/caixa");
 
         return { success: true, message: `Vaga liberada! Valor a pagar: R$${valorPago.toFixed(2)}` };
-    } catch (error: any) {
-        return { success: false, message: error.message || "Erro desconhecido ao liberar a vaga." };
+    } catch (error) {
+        return { success: false, message: error || "Erro desconhecido ao liberar a vaga." };
     }
 }

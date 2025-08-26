@@ -22,7 +22,7 @@ export async function getCaixaAction(): Promise<Caixas[]> {
     });
 
     // Converte os campos Decimal para number antes de retornar
-    return caixasFromDb.map((caixa:any) => ({
+    return caixasFromDb.map((caixa:Caixas) => ({
       ...caixa,
       saldo_abertura: Number(caixa.saldo_abertura),
       saldo_atual: caixa.saldo_atual ? Number(caixa.saldo_atual) : null,

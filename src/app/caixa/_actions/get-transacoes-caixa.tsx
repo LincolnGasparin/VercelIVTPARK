@@ -35,7 +35,7 @@ export async function getTransacoesPorCaixaAction(caixaId: number): Promise<Tran
     });
     
     // 3. Converte o valor Decimal do Prisma para number para ser serializável
-    return transacoes.map((t: any) => ({
+    return transacoes.map((t: TransacaoDetalhe) => ({
       ...t,
       valor_pago: t.valor_pago ? Number(t.valor_pago) : null,
     }));
