@@ -1,15 +1,16 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { Decimal } from "@prisma/client/runtime/library";
 
 // Define um tipo para as transações que serão exibidas no modal
 export type TransacaoDetalhe = {
   id: number;
-  placa_veiculo: string;
+  placa_veiculo: string | null;
   modelo: string | null;
   data_entrada: Date;
   data_saida: Date | null;
-  valor_pago: number | null;
+  valor_pago: Decimal | null;
 };
 
 export async function getTransacoesPorCaixaAction(caixaId: number): Promise<TransacaoDetalhe[]> {
@@ -35,9 +36,9 @@ export async function getTransacoesPorCaixaAction(caixaId: number): Promise<Tran
     });
     
     // 3. Converte o valor Decimal do Prisma para number para ser serializável
-    return transacoes.map((t: TransacaoDetalhe) => ({
+    return transacoes.map((t:TransacaoDetalhe) => ({
       ...t,
-      valor_pago: t.valor_pago ? Number(t.valor_pago) : null,
+      valor_pago: t.valor_pago ? t.valor_pago.toNumber() : null,
     }));
 
   } catch (error) {
