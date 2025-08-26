@@ -18,25 +18,20 @@ const createCadastroSchema = z.object({
 
 type CreateCadastroFormData = z.infer<typeof createCadastroSchema>;
 
-// Definimos um tipo para o resultado da query, para maior segurança.
-type VagaOcupadaResult = {
-    id: number;
-}[];
-
 export async function createCadastroAction(data: CreateCadastroFormData) {
     console.log(data);
     // 1. A query agora verifica se a vaga está ocupada (data_saida IS NULL)
-    const vagasOcupadas = await prisma.$queryRaw<VagaOcupadaResult>`SELECT id FROM transacoes WHERE lado = ${data.lado} AND vaga = ${data.vaga} AND andar = ${data.andar} AND data_saida IS NULL`;
-    console.log(vagasOcupadas); 
+    // const vagasOcupadas = await prisma.transacoes.findFirst({where: {lado: data.lado, vaga: data.vaga, andar: data.andar, data_saida: null}});
+    // console.log(vagasOcupadas); 
 
-    // 2. A verificação agora checa se o array retornado tem algum item.
-    // Se o tamanho for maior que 0, a vaga está ocupada.
-    if (vagasOcupadas.length > 0) {
-        return {
-            data: null,
-            error: "Vaga ocupada"
-        };
-    }
+    // // 2. A verificação agora checa se um registro foi encontrado.
+    // // Se vagasOcupadas não for nulo, a vaga está ocupada.
+    // if (vagasOcupadas) {
+    //     return {
+    //         data: null,
+    //         error: "Vaga ocupada"
+    //     };
+    // }
 
     const schema = createCadastroSchema.safeParse(data);
     if (!schema.success) {
@@ -48,16 +43,28 @@ export async function createCadastroAction(data: CreateCadastroFormData) {
 
 
     try {
-        await prisma.$queryRaw`INSERT INTO transacoes (caixaId, modelo, placa_veiculo, andar, lado, vaga, data_entrada) VALUES (${data.caixaId}, ${data.modelo}, ${data.placa_veiculo}, ${data.andar}, ${data.lado}, ${data.vaga}, ${data.data_entrada})`;
+        await prisma.transacoes.create({
+            data: {
+                caixaId: data.caixaId,
+                modelo: data.modelo,
+                placa_veiculo: data.placa_veiculo,
+                andar: data.andar,
+                lado: data.lado,
+                vaga: data.vaga,
+                data_entrada: new Date(),
+            },
+        },
+    )
         return {
             data: "Cadastro criado com sucesso",
             error: null
         };
         
     } catch (error) {
+        console.log(error);
         return {
             data: null,
-            error: "Erro ao registrar o veículo"
+            error: "Erro ao registrar o veículo",
         };
         
     }

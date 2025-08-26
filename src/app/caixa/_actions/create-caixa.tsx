@@ -29,7 +29,16 @@ export async function createCaixaAction(data: CreateCaixaFormData) {
 
 
     try {
-        await prisma.$queryRaw`INSERT INTO caixas (saldo_abertura, operador, data_abertura) VALUES (${data.saldo_abertura}, ${data.operador}, NOW())`;
+        
+        // await prisma.$queryRaw`INSERT INTO caixas (saldo_abertura, operador, data_abertura) VALUES (${data.saldo_abertura}, ${data.operador}, NOW())`;
+        await prisma.caixas.create({
+            data: {
+                saldo_abertura: data.saldo_abertura,
+                operador: data.operador,
+                data_abertura: new Date(),
+        },
+        });
+        
         return {
             data: "Caixa criado com sucesso",
             error: null

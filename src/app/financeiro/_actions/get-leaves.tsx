@@ -13,7 +13,8 @@ export interface Leave  {
 };
 
 export async function getLeaveAction() : Promise<Leave[]> {
-    const result = await prisma.$queryRaw<Leave[]>`SELECT * FROM transacoes WHERE data_saida IS NOT NULL ORDER BY data_saida DESC`;
+    // const result = await prisma.$queryRaw<Leave[]>`SELECT * FROM transacoes WHERE data_saida IS NOT NULL ORDER BY data_saida DESC`;
+    const result = await prisma.transacoes.findMany({where: {data_saida: {not: null}}, orderBy: {data_saida: 'desc'}});
     return result;
 }
 

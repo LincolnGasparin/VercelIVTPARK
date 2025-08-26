@@ -21,7 +21,18 @@ export async function getTransacoesPorCaixaAction(caixaId: number): Promise<Tran
 
 
     // 2. Busca as transações (saídas) dentro desse período
-    const transacoes = await prisma.$queryRaw<any>`SELECT * FROM transacoes WHERE caixaId = ${caixaId} AND data_saida IS NOT NULL ORDER BY data_saida DESC`;
+    // const transacoes = await prisma.$queryRaw<any>`SELECT * FROM transacoes WHERE caixaId = ${caixaId} AND data_saida IS NOT NULL ORDER BY data_saida DESC`;
+    const transacoes = await prisma.transacoes.findMany({
+      where: {
+        caixaId: caixaId,
+        data_saida: {
+          not: null,
+        },
+      },
+      orderBy: {
+        data_saida: 'desc',
+      },
+    });
     
     // 3. Converte o valor Decimal do Prisma para number para ser serializável
     return transacoes.map((t: any) => ({

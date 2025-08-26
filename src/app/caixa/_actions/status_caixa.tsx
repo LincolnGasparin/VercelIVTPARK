@@ -14,12 +14,23 @@ type CaixaQueryResult = {
 
 export async function statusCaixaAction(): Promise<CaixaStatusResult> {
   // A query retorna um array. Se o caixa estiver aberto, o array terá um item.
-  const caixaAberto = await prisma.$queryRaw<CaixaQueryResult>`SELECT id FROM caixas WHERE data_fechamento IS NULL ORDER BY data_abertura DESC LIMIT 1`;
+  // const caixaAberto = await prisma.$queryRaw<CaixaQueryResult>`SELECT id FROM caixas WHERE data_fechamento IS NULL ORDER BY data_abertura DESC LIMIT 1`;
 
-  if (caixaAberto.length > 0) {
+  const caixaAberto = await prisma.caixas.findFirst({
+    where: {
+      data_fechamento: null,
+    },
+    orderBy: {
+      data_abertura: "desc",
+    },
+    select: {
+      id: true,
+    },
+  })
+
+  if (caixaAberto) {
     // Encontrou um caixa aberto
-    console.log("Caixa aberto encontrado:", caixaAberto[0].id);
-    return { status: "aberto", id: caixaAberto[0].id };
+    return { status: "aberto", id: caixaAberto.id };
   }
 
   // Nenhum caixa aberto encontrado

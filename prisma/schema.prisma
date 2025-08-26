@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -18,14 +18,13 @@ model Caixas {
   saldo_fechamento Decimal?    @db.Decimal(10, 2)
   operador         String      @db.VarChar(100)
   transacoes       Transacoes[]
-  @@map("caixas")
 }
 
 model Transacoes {
   id            Int       @id @default(autoincrement())
   caixaId       Int
-  modelo        String    @db.VarChar(100)
-  placa_veiculo String    @db.VarChar(20)
+  modelo        String?   @db.VarChar(100)
+  placa_veiculo String?   @db.VarChar(20)
   lado          String    @db.VarChar(10)
   andar         Int
   vaga          Int
@@ -34,6 +33,5 @@ model Transacoes {
   valor_pago    Decimal?  @db.Decimal(10, 2)
   caixas         Caixas    @relation(fields: [caixaId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transacao_caixa")
 
-  @@map("transacoes")
   @@index([caixaId], map: "idx_transacoes_caixaId")
 }

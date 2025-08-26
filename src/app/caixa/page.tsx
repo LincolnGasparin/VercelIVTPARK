@@ -217,9 +217,9 @@ export default function Caixa() {
                                 <td className="px-4 py-2">{caixa.operador}</td>
                                 <td className="px-4 py-2">{formatDate(caixa.data_abertura)}</td>
                                 <td className="px-4 py-2">{formatDate(caixa.data_fechamento)}</td>
-                                <td className="px-4 py-2 text-right">{formatCurrency(caixa.saldo_abertura)}</td>
-                                <td className="px-4 py-2 text-right">{formatCurrency(caixa.saldo_fechamento)}</td>
-                                <td className="px-4 py-2 text-right">{formatCurrency(caixa.saldo_abertura + caixa.saldo_fechamento)}</td>
+                                <td className="px-4 py-2 text-right">{formatCurrency(Number(caixa.saldo_abertura))}</td>
+                                <td className="px-4 py-2 text-right">{formatCurrency(Number(caixa.saldo_fechamento))}</td>
+                                <td className="px-4 py-2 text-right">{formatCurrency(Number(caixa.saldo_abertura) + Number(caixa.saldo_fechamento ?? 0))}</td>
                                 <td className="px-4 py-2"><button onClick={() => handleOpenDetalhesModal(caixa)} className="text-blue-500 hover:underline">Detalhes</button></td>
                                 </tr>
                             ))) : (
@@ -250,9 +250,9 @@ export default function Caixa() {
                     <div className="overflow-y-auto">
                         <div className="mb-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                             <p><strong>Operador:</strong> {detalhesCaixa?.operador}</p>
-                            <p><strong>Abertura:</strong> {formatDate(detalhesCaixa?.data_abertura ?? 'N/A')}</p>
-                            <p><strong>Fechamento:</strong> {formatDate(detalhesCaixa?.data_fechamento ?? 'N/A')}</p>
-                            <p><strong>Total Receita:</strong> {formatCurrency(detalhesCaixa?.saldo_fechamento ?? 0)}</p>
+                            <p><strong>Abertura:</strong> {formatDate(detalhesCaixa?.data_abertura || "N/A")}</p>
+                            <p><strong>Fechamento:</strong> {formatDate(detalhesCaixa?.data_fechamento || "N/A")}</p>
+                            <p><strong>Total Receita:</strong> {formatCurrency(Number(detalhesCaixa?.saldo_fechamento))}</p>
                         </div>
                         <h4 className="text-lg font-semibold mb-2 mt-4 border-t pt-2">Veículos com Saída no Período</h4>
                         <table className="w-full table-auto text-sm">

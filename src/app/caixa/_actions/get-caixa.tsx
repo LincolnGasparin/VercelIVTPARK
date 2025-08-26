@@ -2,23 +2,35 @@
 
 import { prisma } from "@/lib/prisma";
 
-export interface Caixas {
-    id: number;
-    data_abertura: Date;
-    data_fechamento: Date | null;
-    saldo_abertura: number;
-    saldo_fechamento: number;
-    operador: string;
-  };
+// Este é o tipo que você deve exportar e usar no seu componente de cliente
+export type Caixas = {
+  id: number;
+  data_abertura: Date;
+  data_fechamento: Date | null;
+  saldo_abertura: number; // Note que é `number`
+  saldo_atual: number | null;
+  saldo_fechamento: number | null; // Note que é `number`
+  operador: string;
+};
 
 export async function getCaixaAction(): Promise<Caixas[]> {
-    const caixasFromDb = await prisma.$queryRaw<any[]>`SELECT * FROM caixas WHERE data_fechamento IS NOT NULL ORDER BY data_abertura DESC`;
-    
-    // Converte os campos Decimal para number antes de retornar para o cliente.
-    return caixasFromDb.map(caixa => ({
-        ...caixa,
-        saldo_abertura: Number(caixa.saldo_abertura),
-        // Garante que o saldo_fechamento seja 0 se for nulo
-        saldo_fechamento: caixa.saldo_fechamento ? Number(caixa.saldo_fechamento) : 0,
+  try {
+    const caixasFromDb = await prisma.caixas.findMany({
+      orderBy: {
+        data_abertura: 'desc',
+      },
+    });
+
+    // Converte os campos Decimal para number antes de retornar
+    return caixasFromDb.map((caixa:any) => ({
+      ...caixa,
+      saldo_abertura: Number(caixa.saldo_abertura),
+      saldo_atual: caixa.saldo_atual ? Number(caixa.saldo_atual) : null,
+      saldo_fechamento: caixa.saldo_fechamento ? Number(caixa.saldo_fechamento) : null,
     }));
+
+  } catch (error) {
+    console.error("Erro ao buscar histórico de caixas:", error);
+    return [];
+  }
 }
