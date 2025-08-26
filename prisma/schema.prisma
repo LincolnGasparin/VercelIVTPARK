@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Caixas {
+  id               Int         @id @default(autoincrement())
+  data_abertura    DateTime    @db.Timestamp(0)
+  data_fechamento  DateTime?   @db.Timestamp(0)
+  saldo_abertura   Decimal     @db.Decimal(10, 2)
+  saldo_atual      Decimal?    @db.Decimal(10, 2)
+  saldo_fechamento Decimal?    @db.Decimal(10, 2)
+  operador         String      @db.VarChar(100)
+  transacoes       Transacoes[]
+  @@map("caixas")
+}
+
+model Transacoes {
+  id            Int       @id @default(autoincrement())
+  caixaId       Int
+  modelo        String    @db.VarChar(100)
+  placa_veiculo String    @db.VarChar(20)
+  lado          String    @db.VarChar(10)
+  andar         Int
+  vaga          Int
+  data_entrada  DateTime  @db.Timestamp(0)
+  data_saida    DateTime? @db.Timestamp(0)
+  valor_pago    Decimal?  @db.Decimal(10, 2)
+  caixas         Caixas    @relation(fields: [caixaId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transacao_caixa")
+
+  @@map("transacoes")
+  @@index([caixaId], map: "idx_transacoes_caixaId")
+}
