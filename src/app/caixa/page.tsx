@@ -273,7 +273,7 @@ export default function Caixa() {
                                             <td className="px-4 py-2">{t.modelo || 'N/A'}</td>
                                             <td className="px-4 py-2">{formatDate(t.data_entrada)}</td>
                                             <td className="px-4 py-2">{formatDate(t.data_saida)}</td>
-                                            <td className="px-4 py-2 text-right">{formatCurrency(t.valor_pago)}</td>
+                                            <td className="px-4 py-2 text-right">{formatCurrency(Number(t.valor_pago))}</td>
                                         </tr>
                                     ))
                                 ) : (
