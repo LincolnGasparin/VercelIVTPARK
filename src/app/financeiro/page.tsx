@@ -1,4 +1,5 @@
 import { getLeaveAction, type Leave } from "./_actions/get-leaves";
+export const dynamic = "force-dynamic";
 
 const calculateDays = (entrada: Date, saida: Date): number => {
   if (!saida || !entrada) return 0;

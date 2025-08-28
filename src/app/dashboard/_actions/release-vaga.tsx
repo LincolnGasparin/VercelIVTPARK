@@ -96,7 +96,7 @@ export async function releaseVagaAction(transactionId: number) {
                     id: caixa.id
                 },
                 data: {
-                    saldo_atual: caixa.saldo_atual + valorPago
+                    saldo_atual: { increment: valorPago }
                 }
             })
         ]);
