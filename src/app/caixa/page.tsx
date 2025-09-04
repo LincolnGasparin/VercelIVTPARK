@@ -5,7 +5,7 @@ import { statusCaixaAction } from './_actions/status_caixa';
 import { closeCaixaAction } from './_actions/close-caixa';
 import { getCaixaAction, type Caixas } from './_actions/get-caixa';
 import { getTransacoesPorCaixaAction, type TransacaoDetalhe } from './_actions/get-transacoes-caixa';
-import { TicketPrinter, createRelatorioCaixaData } from "@/components/ticket-printer";
+import { TicketPrinter, createRelatorioCaixaData, type RelatorioCaixaData } from "@/components/ticket-printer";
 
 const formatCurrency = (value: number | null) => {
   // Garante que não tentaremos formatar um valor inválido

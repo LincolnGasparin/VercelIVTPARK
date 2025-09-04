@@ -26,7 +26,7 @@ interface TicketSaidaData {
   ticketId: string;
 }
 
-interface RelatorioCaixaData {
+export interface RelatorioCaixaData {
   caixaId: number;
   operador: string;
   dataAbertura: string;

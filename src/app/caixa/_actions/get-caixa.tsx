@@ -8,9 +8,9 @@ export type Caixas = {
   id: number;
   data_abertura: Date;
   data_fechamento: Date | null;
-  saldo_abertura: Decimal; // Note que é `number`
-  saldo_atual: Decimal | null;
-  saldo_fechamento: Decimal | null; // Note que é `number`
+  saldo_abertura: number; // Convertido para number
+  saldo_atual: number | null;
+  saldo_fechamento: number | null; // Convertido para number
   operador: string;
 };
 
@@ -23,11 +23,11 @@ export async function getCaixaAction(): Promise<Caixas[]> {
     });
 
     // Converte os campos Decimal para number antes de retornar
-    return caixasFromDb.map((caixa:Caixas) => ({
+    return caixasFromDb.map((caixa) => ({
       ...caixa,
       saldo_abertura: Number(caixa.saldo_abertura),
-      saldo_atual: Number(caixa.saldo_atual) ,
-      saldo_fechamento: Number(caixa.saldo_fechamento) ,
+      saldo_atual: caixa.saldo_atual ? Number(caixa.saldo_atual) : null,
+      saldo_fechamento: caixa.saldo_fechamento ? Number(caixa.saldo_fechamento) : null,
     }));
 
   } catch (error) {

@@ -10,7 +10,7 @@ export type TransacaoDetalhe = {
   modelo: string | null;
   data_entrada: Date;
   data_saida: Date | null;
-  valor_pago: Decimal | null;
+  valor_pago: number | null;
 };
 
 export async function getTransacoesPorCaixaAction(caixaId: number): Promise<TransacaoDetalhe[]> {
@@ -36,9 +36,9 @@ export async function getTransacoesPorCaixaAction(caixaId: number): Promise<Tran
     });
     
     // 3. Converte o valor Decimal do Prisma para number para ser serializável
-    return transacoes.map((t:TransacaoDetalhe) => ({
+    return transacoes.map((t) => ({
       ...t,
-      valor_pago: t.valor_pago,
+      valor_pago: t.valor_pago ? Number(t.valor_pago) : null,
     }));
 
   } catch (error) {
