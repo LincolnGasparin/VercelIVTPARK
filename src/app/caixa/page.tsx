@@ -5,6 +5,7 @@ import { statusCaixaAction } from './_actions/status_caixa';
 import { closeCaixaAction } from './_actions/close-caixa';
 import { getCaixaAction, type Caixas } from './_actions/get-caixa';
 import { getTransacoesPorCaixaAction, type TransacaoDetalhe } from './_actions/get-transacoes-caixa';
+import { TicketPrinter, createRelatorioCaixaData } from "@/components/ticket-printer";
 
 const formatCurrency = (value: number | null) => {
   // Garante que não tentaremos formatar um valor inválido
@@ -34,6 +35,9 @@ export default function Caixa() {
   const [detalhesTransacoes, setDetalhesTransacoes] = useState<TransacaoDetalhe[]>([]);
   const [isLoadingModal, setIsLoadingModal] = useState(false);
 
+  const [showRelatorioModal, setShowRelatorioModal] = useState(false);
+  const [relatorioData, setRelatorioData] = useState<RelatorioCaixaData | null>(null);
+
   useEffect(() => {
     // Função para verificar o status e buscar o histórico
     const fetchData = async () => {
@@ -45,7 +49,6 @@ export default function Caixa() {
 
   async function verificarStatus() {
     const response = await statusCaixaAction();
-    console.log("Resposta da Action:", response);
 
     // Atualiza o estado do componente com a resposta do servidor
     setStatusCaixa(response.status);
@@ -132,6 +135,11 @@ export default function Caixa() {
     setIsDetalhesModalOpen(false);
     setDetalhesCaixa(null);
     setDetalhesTransacoes([]);
+  };
+
+  const handleRelatorioPrintComplete = () => {
+    setShowRelatorioModal(false);
+    setRelatorioData(null);
   };
 
   return (
@@ -307,6 +315,15 @@ export default function Caixa() {
             </div>
         </div>
     </div>
+
+    {/* Modal do Relatório de Caixa */}
+    {showRelatorioModal && (
+        <TicketPrinter
+          type="relatorio-caixa"
+          data={relatorioData}
+          onPrintComplete={handleRelatorioPrintComplete}
+        />
+      )}
     </>
   );
 }

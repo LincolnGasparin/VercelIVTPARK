@@ -15,13 +15,6 @@ function calcularValor(dataEntrada: Date, dataSaida: Date): number {
 
     return diffDays * valorDiaria;
 }
-type LiberarVaga = {
-    data_entrada: Date;
-    data_saida: Date;
-}[];
-type CaixaQueryResult = {
-  id: number;
-}[];
 
 export async function releaseVagaAction(transactionId: number) {
     // const caixa = await prisma.$queryRaw<CaixaQueryResult>`SELECT id FROM caixas WHERE data_fechamento IS NULL LIMIT 1`;
@@ -105,8 +98,16 @@ export async function releaseVagaAction(transactionId: number) {
         revalidatePath("/dashboard");
         revalidatePath("/caixa");
 
-        return { success: true, message: `Vaga liberada! Valor a pagar: R$${valorPago.toFixed(2)}` };
+        return { 
+            success: true, 
+            message: `Vaga liberada! Valor a pagar: R$${valorPago.toFixed(2)}`,
+            valorPago: valorPago // Retorna o valor calculado
+        };
     } catch (error) {
-        return { success: false, message: error || "Erro desconhecido ao liberar a vaga." };
+        return { 
+            success: false, 
+            message: error || "Erro desconhecido ao liberar a vaga.",
+            valorPago: 0
+        };
     }
 }

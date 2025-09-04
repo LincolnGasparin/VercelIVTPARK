@@ -25,9 +25,9 @@ export async function getCaixaAction(): Promise<Caixas[]> {
     // Converte os campos Decimal para number antes de retornar
     return caixasFromDb.map((caixa:Caixas) => ({
       ...caixa,
-      saldo_abertura: caixa.saldo_abertura,
-      saldo_atual: caixa.saldo_atual ,
-      saldo_fechamento: caixa.saldo_fechamento ,
+      saldo_abertura: Number(caixa.saldo_abertura),
+      saldo_atual: Number(caixa.saldo_atual) ,
+      saldo_fechamento: Number(caixa.saldo_fechamento) ,
     }));
 
   } catch (error) {
