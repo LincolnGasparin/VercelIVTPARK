@@ -87,6 +87,6 @@ prisma/
 
 
 
-LinkedIn: [Lincoln Gasparin](https://www.linkedin.com/in/lincolngasparin/)]
+LinkedIn: [Lincoln Gasparin](https://www.linkedin.com/in/lincolngasparin/)
 Email: [lincolngasparin@hotmail.com]
-Deploy:[Link para o app](https://vercel-ivtpark.vercel.app/dashboard)]
+Deploy:[Link para o app](https://vercel-ivtpark.vercel.app/dashboard)
