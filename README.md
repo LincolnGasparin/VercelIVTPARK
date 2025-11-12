@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IVTPark – Sistema de Estacionamento
 
-## Getting Started
+Aplicação web para gestão de estacionamentos, incluindo controle de vagas, transações (entradas e saídas), fechamento de caixa e painel financeiro com métricas diárias, semanais e mensais.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🧱 Stack Principal
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Next.js 14** (App Pages, Server Actions, Turbopack)
+- **React** + **Tailwind CSS**
+- **Prisma ORM**
+- **PostgreSQL / Supabase**
+- **TypeScript**
+- **Zod**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Funcionalidades
 
-## Learn More
+- Cadastro de transações: lado, andar e vaga ocupada, dados do veículo e hora de entrada.
+- Liberação de vaga com cálculo automático de permanência e valor pago.
+- Painel financeiro com receita diária/semana/mês e listagem de saídas.
+- Gestão de caixas: abertura, fechamento e resumo das transações vinculadas.
+- Impressão de tickets e detalhamento de transações por caixa.
+- Migrações via Prisma e reuso de cliente Prisma com cache global.
+- Utilizado zod para validação de dados.
+- Cadastro só funciona com o caixa aberto.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Como rodar localmente
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Clonar o projeto**
+   ```bash
+   git clone https://github.com/LincolnGasparin/VercelIVTPARK.git
+   cd VercelIVTPARK
+   ```
 
-## Deploy on Vercel
+2. **Instalar dependências**
+   ```bash
+   pnpm install
+   # ou yarn install / npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Configurar variáveis de ambiente**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   Crie um `.env` na raiz com:
+
+   ```env
+   DATABASE_URL="postgresql://usuario:senha@host:5432/banco?schema=public"
+   DIRECT_URL="postgresql://usuario:senha@host:5432/banco?schema=public&connection_limit=1"
+   ```
+
+   > Use as credenciais do seu Postgres/Supabase. Se preferir, `DIRECT_URL` pode ser igual a `DATABASE_URL`.
+
+4. **Preparar o banco**
+
+   ```bash
+   npx prisma migrate deploy   # ou npx prisma db push (ambiente de dev)
+   npx prisma generate
+   ```
+
+5. **Executar o projeto**
+
+   ```bash
+   pnpm dev
+   # ou npm run dev / yarn dev
+   ```
+
+   Acesse em `http://localhost:3000`.
+
+---
+
+## 📦 Deploy / Produção
+
+1. Configure `DATABASE_URL` e `DIRECT_URL` no provedor (ex.: Vercel → Settings → Environment Variables).
+2. Faça deploy (`vercel`, GitHub Actions, etc.).
+3. Execute `npx prisma migrate deploy` no ambiente de produção.
+
+---
+
+## 🗂 Estrutura de Pastas (resumo)src/
+  app/
+    dashboard/
+    caixa/
+    financeiro/
+    cadastro/
+  components/
+    ticket-printer.tsx
+  lib/
+    prisma.ts          # cliente Prisma com cache global
+prisma/
+  schema.prisma
+  migrations/
+
+
+
+
+LinkedIn: [[LinkedIn](https://www.linkedin.com/in/lincolngasparin/)]
+Email: [lincolngasparin@hotmail.com]
+Deploy:(https://vercel-ivtpark.vercel.app/dashboard)
