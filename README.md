@@ -69,15 +69,6 @@ Aplicação web para gestão de estacionamentos, incluindo controle de vagas, tr
 
    Acesse em `http://localhost:3000`.
 
----
-
-## 📦 Deploy / Produção
-
-1. Configure `DATABASE_URL` e `DIRECT_URL` no provedor (ex.: Vercel → Settings → Environment Variables).
-2. Faça deploy (`vercel`, GitHub Actions, etc.).
-3. Execute `npx prisma migrate deploy` no ambiente de produção.
-
----
 
 ## 🗂 Estrutura de Pastas (resumo)src/
   app/
@@ -96,6 +87,6 @@ prisma/
 
 
 
-LinkedIn: [[LinkedIn](https://www.linkedin.com/in/lincolngasparin/)]
+LinkedIn: [Lincoln Gasparin](https://www.linkedin.com/in/lincolngasparin/)]
 Email: [lincolngasparin@hotmail.com]
-Deploy:(https://vercel-ivtpark.vercel.app/dashboard)
+Deploy:[Link para o app](https://vercel-ivtpark.vercel.app/dashboard)]
